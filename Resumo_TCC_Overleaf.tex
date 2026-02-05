@@ -1,0 +1,186 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{enumitem}
+
+\geometry{a4paper, margin=2.5cm}
+
+\title{Resumo do Projeto: TCC Infinity}
+\author{Documentação do Desenvolvedor}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Visão Geral do Projeto}
+O projeto \textbf{TCC Infinity} é uma aplicação web focada em Gamificação e Educação, consistindo em um sistema de Quiz interativo. O diferencial do projeto é a integração com Inteligência Artificial para geração automática de perguntas, além de funcionalidades de PWA (Progressive Web App) para facilitar o acesso em dispositivos móveis.
+
+A aplicação permite que usuários se cadastrem, respondam quizzes de diferentes categorias e acompanhem suas pontuações. Administradores possuem um painel para gerar novas perguntas via IA e gerenciar o conteúdo.
+
+\section{Tecnologias Utilizadas}
+\begin{itemize}
+    \item \textbf{Frontend:} React.js (Vite), CSS Moderno, PWA Manifest.
+    \item \textbf{Backend:} Node.js, Express.
+    \item \textbf{Banco de Dados:} MySQL (Relacional).
+    \item \textbf{Integração IA:} API para geração de conteúdo (Google Gemini/OpenAI).
+    \item \textbf{Hospedagem (Planejada):} HostGator (arquivos estáticos e servidor Node).
+\end{itemize}
+
+\section{Passo a Passo do Desenvolvimento}
+Abaixo, o cronograma resumido das etapas técnicas realizadas para a construção do projeto:
+
+\subsection{1. Configuração Inicial e Infraestrutura}
+\begin{itemize}
+    \item Definição da arquitetura Cliente-Servidor.
+    \item Criação da estrutura de pastas separada: \texttt{frontend} e \texttt{backend}.
+    \item Inicialização do projetos Node.js e React.
+\end{itemize}
+
+\subsection{2. Modelagem do Banco de Dados}
+\begin{itemize}
+    \item Criação do script \texttt{schema.sql} para definição das tabelas.
+    \item Tabelas principais: \texttt{users} (usuários), \texttt{categories} (temas), \texttt{questions} (perguntas), \texttt{answers} (respostas) e \texttt{scores} (pontuação).
+    \item Implementação de scripts auxiliares para verificar dados e criar administradores (\texttt{create\_admin.js}).
+\end{itemize}
+
+\subsection{3. Desenvolvimento do Backend (API)}
+\begin{itemize}
+    \item Configuração do servidor Express.
+    \item Implementação de rotas de Autenticação (Login e Registro) com hash de senhas.
+    \item Criação de \texttt{Controllers} para gerenciar a lógica de usuários e perguntas.
+    \item Desenvolvimento da integração com IA para criar perguntas dinamicamente e salvá-las no banco.
+\end{itemize}
+
+\subsection{4. Desenvolvimento do Frontend (Interface)}
+\begin{itemize}
+    \item Criação das páginas principais: Home, Login, Cadastro (Register).
+    \item Implementação do fluxo de jogo (GameQuiz).
+    \item Desenvolvimento do Painel Administrativo para geração de perguntas.
+    \item Ajustes visuais e de usabilidade (CSS responsivo).
+\end{itemize}
+
+\subsection{5. Implementação de SEO e PWA}
+\begin{itemize}
+    \item Configuração do \texttt{manifest.webmanifest} para instalação no celular.
+    \item Ajustes de metadados para melhor indexação e aparência.
+\end{itemize}
+
+\newpage
+
+\section{Perguntas e Respostas para Banca (Q\&A)}
+Esta seção contém 25 possíveis perguntas organizadas por tópicos, cobrindo aspectos técnicos, teóricos e de gestão do projeto.
+
+\subsection{Metodologia e Visão Geral}
+
+\begin{enumerate}
+    \item \textbf{Qual foi a maior dificuldade técnica encontrada no projeto?} \\
+    \textit{R: Integração do Frontend com o Backend (CORS issues) ou a calibração do prompt da IA para gerar JSON válido consistentemente.}
+
+    \item \textbf{Por que a escolha de uma aplicação Web e não um App Nativo?} \\
+    \textit{R: A Web é universal e acessível em qualquer dispositivo sem instalação. Com a tecnologia PWA, conseguimos uma experiência próxima de app nativo com menor custo de desenvolvimento.}
+
+    \item \textbf{Qual metodologia de desenvolvimento você utilizou?} \\
+    \textit{R: Foi utilizado um modelo iterativo e incremental, próximo ao Agile/Scrum, onde funcionalidades eram desenvolvidas, testadas e integradas em ciclos curtos.}
+
+    \item \textbf{Como você gerenciou o código fonte?} \\
+    \textit{R: Utilizando Git para versionamento, o que permite histórico de alterações e backup seguro do código.}
+\end{enumerate}
+
+\subsection{Banco de Dados e Modelagem}
+
+\begin{enumerate}[resume]
+    \item \textbf{Por que usar um Banco Relacional (MySQL) e não NoSQL neste caso?} \\
+    \textit{R: A estrutura de Perguntas, Respostas e Usuários é altamente estruturada e relacionada. A integridade referencial do SQL previne dados órfãos.}
+
+    \item \textbf{Como está normalizado o seu banco de dados?} \\
+    \textit{R: O banco respeita pelo menos a 3ª Forma Normal (3FN), separando dados repetitivos em tabelas próprias (ex: categorias separadas de perguntas).}
+
+    \item \textbf{Como o sistema lida com exclusão de dados (ex: apagar um usuário)?} \\
+    \textit{R: (Depende da implementação) Idealmente usamos "Soft Delete" (marcar como inativo) ou "Cascading Delete" no banco para garantir que não sobrem pontuações de usuários inexistentes.}
+
+    \item \textbf{Qual a cardinalidade entre Perguntas e Respostas?} \\
+    \textit{R: É uma relação 1:N (Um para Muitos). Uma pergunta tem muitas respostas, mas uma resposta pertence a apenas uma pergunta.}
+\end{enumerate}
+
+\subsection{Backend e API}
+
+\begin{enumerate}[resume]
+    \item \textbf{O que é uma API RESTful e seu projeto segue isso?} \\
+    \textit{R: É um estilo de arquitetura que usa métodos HTTP (GET, POST, etc.) de forma semântica. Sim, meu projeto usa rotas claras e retornos JSON padronizados.}
+
+    \item \textbf{Como você tratou erros no servidor?} \\
+    \textit{R: Utilizamos blocos Try/Catch nas funções assíncronas e retornamos códigos HTTP apropriados (400 para erro do cliente, 500 para erro do servidor).}
+
+    \item \textbf{Por que usar Node.js no backend?} \\
+    \textit{R: Pela eficiência do modelo Non-blocking I/O e pela vantagem de usar a mesma linguagem (JavaScript) no Frontend e Backend.}
+
+    \item \textbf{Como funciona a autenticação no sistema?} \\
+    \textit{R: (Assumindo implementação padrão) O usuário envia credenciais, o servidor valida o hash e retorna um sucesso (ou token JWT) que o frontend armazena para manter a sessão.}
+\end{enumerate}
+
+\subsection{Frontend e Experiência do Usuário (UX)}
+
+\begin{enumerate}[resume]
+    \item \textbf{O que é React e por que ele foi escolhido?} \\
+    \textit{R: É uma biblioteca JS para criar interfaces baseadas em componentes. Facilita o reuso de código e a gestão de estado da aplicação.}
+
+    \item \textbf{Como o site se comporta em dispositivos móveis?} \\
+    \textit{R: O layout é responsivo (via CSS Media Queries), adaptando o menu e grids para telas menores.}
+
+    \item \textbf{Explique o conceito de SPA (Single Page Application).} \\
+    \textit{R: É uma aplicação que carrega uma única página HTML e atualiza o conteúdo dinamicamente via JS. Isso torna a navegação muito mais rápida que sites tradicionais.}
+
+    \item \textbf{Como funciona a gestão de estado no Frontend?} \\
+    \textit{R: Utilizamos Hooks do React (useState, useEffect) para controlar dados locais, como a pontuação atual ou o formulário sendo preenchido.}
+\end{enumerate}
+
+\subsection{Inteligência Artificial}
+
+\begin{enumerate}[resume]
+    \item \textbf{Como é feita a comunicação com a IA?} \\
+    \textit{R: Via requisição HTTP (API) enviando um prompt de texto e recebendo a resposta gerada.}
+
+    \item \textbf{Como você garante que a IA devolva um formato que o sistema entenda?} \\
+    \textit{R: Através de "Prompt Engineering", instruindo explicitamente a IA a retornar dados estritamente em formato JSON.}
+
+    \item \textbf{A geração de perguntas é feita em tempo real para o usuário?} \\
+    \textit{R: Não, é feita pelo administrador previamente. Isso evita lentidão para o usuário final e permite revisão do conteúdo.}
+
+    \item \textbf{Qual o custo computacional dessa integração?} \\
+    \textit{R: O processamento pesado ocorre nos servidores da provedora da IA (Google/OpenAI), nosso servidor apenas repassa os dados, então o custo local é baixo.}
+\end{enumerate}
+
+\subsection{Segurança}
+
+\begin{enumerate}[resume]
+    \item \textbf{Como as senhas são armazenadas?} \\
+    \textit{R: Criptografadas via Hash (ex: bcrypt). Nunca em texto plano.}
+
+    \item \textbf{O sistema está protegido contra SQL Injection?} \\
+    \textit{R: Sim, utilizamos ORMs ou "Prepared Statements" nas queries SQL, que sanitizam os inputs antes de executar no banco.}
+
+    \item \textbf{Como evitar Cross-Site Scripting (XSS)?} \\
+    \textit{R: O React protege nativamente contra a maioria dos ataques XSS ao escapar automaticamente o conteúdo renderizado nas variáveis.}
+\end{enumerate}
+
+\subsection{Futuro e Manutenção}
+
+\begin{enumerate}[resume]
+    \item \textbf{Como escalar essa aplicação para 1 milhão de usuários?} \\
+    \textit{R: Migrar para serviços de nuvem escaláveis (AWS/Google Cloud), implementar cache (Redis), usar CDN para arquivos estáticos e otimizar queries de banco.}
+
+    \item \textbf{O que você melhoraria se tivesse mais tempo?} \\
+    \textit{R: Implementaria modos Multiplayer em tempo real (via WebSockets), mais conquistas de gamificação e um painel de analytics mais detalhado para o admin.}
+\end{enumerate}
+
+\end{document}
